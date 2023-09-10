@@ -5,7 +5,7 @@ import scienceplots
 plt.style.use([ 'notebook', 'grid','bright'])
 np.random.seed(123)
 
-def ornstein_uhlenbeck( alpha=1, sigma=1, T=1, N=100 ):
+def ornstein_uhlenbeck( x_0, alpha=1, sigma=1, T=1, N=100 ):
     #number of elements = 1 + T*N
     t = np.arange(0, T + 1 / N, 1 / N)
     #random increments
@@ -14,7 +14,7 @@ def ornstein_uhlenbeck( alpha=1, sigma=1, T=1, N=100 ):
 
     W = np.cumsum(dW)
 
-    X = np.array( [1] )
+    X = np.array( [x_0] )
 
     for i in range( T*N ):
         value = X[i] + ( -1*alpha*X[i] )*( t[i+1] - t[i] ) + (sigma)*(W[i+1] - W[i])
@@ -26,48 +26,54 @@ def ornstein_uhlenbeck( alpha=1, sigma=1, T=1, N=100 ):
 
 def main():
     #time interval
-    T = 1
+    T = 10
     # number of divisions of [0,1]
-    N = 200
+    N = 100
     #parameters
+    x_0 = 10
     alpha= 1
     sigma = 1
 
-    process_1 = ornstein_uhlenbeck(alpha=alpha, sigma=sigma, T=T, N=N)
-    process_2 = ornstein_uhlenbeck(alpha=alpha, sigma=sigma, T=T, N=N)
-    process_3 = ornstein_uhlenbeck(alpha=alpha, sigma=sigma, T=T, N=N)
-    process_4 = ornstein_uhlenbeck(alpha=alpha, sigma=sigma, T=T, N=N)
-    process_5 = ornstein_uhlenbeck(alpha=alpha, sigma=sigma, T=T, N=N)
+    path_1 = ornstein_uhlenbeck(x_0=x_0, alpha=alpha, sigma=sigma, T=T, N=N)
+    path_2 = ornstein_uhlenbeck(x_0=x_0, alpha=alpha, sigma=sigma, T=T, N=N)
+    path_3 = ornstein_uhlenbeck(x_0=x_0, alpha=alpha, sigma=sigma, T=T, N=N)
+    path_4 = ornstein_uhlenbeck(x_0=x_0, alpha=alpha, sigma=sigma, T=T, N=N)
+    path_5 = ornstein_uhlenbeck(x_0=x_0, alpha=alpha, sigma=sigma, T=T, N=N)
 
-    # plt.title('Simulating Ornstein-Uhlenbeck Processes')
-    # plt.plot(process_1[0], process_1[1], linewidth=1, label='process_1')
-    # plt.plot(process_2[0], process_2[1], linewidth=1, label='process_2')
-    # plt.plot(process_3[0], process_3[1], linewidth=1, label='process_3')
-    # plt.legend()
-    # plt.show()
-
-    fig=plt.figure()
-    plt.xlim( 0, 1 )
-    plt.ylim( -1, 3 )
+    plt.xlim( 0, T+1)
+    plt.ylim( -(x_0+1), +(x_0+1) )
     plt.title('Simulating Ornstein-Uhlenbeck Processes')
-    l_1, = plt.plot( [], [], linewidth=1, label='process_1' )
-    l_2, = plt.plot( [], [], linewidth=1, label='process_2' )
-    l_3, = plt.plot( [], [], linewidth=1, label='process_3' )
-    l_4, = plt.plot( [], [], linewidth=1, label='process_4')
-    l_5, = plt.plot( [], [], linewidth=1, label='process_5')
+    plt.plot(path_1[0], path_1[1], linewidth=1, label='path_1')
+    plt.plot(path_2[0], path_2[1], linewidth=1, label='path_2')
+    plt.plot(path_3[0], path_3[1], linewidth=1, label='path_3')
+    plt.plot(path_4[0], path_4[1], linewidth=1, label='path_4')
+    plt.plot(path_5[0], path_5[1], linewidth=1, label='path_5')
     plt.legend()
+    plt.savefig('ornstein_uhlenbeck.png')
+    plt.show()
 
-    metadata = dict( title='ornstein_uhlenbeck', artist='me' )
-    writer = PillowWriter(fps=(N*T+1), metadata=metadata)
+    # fig=plt.figure()
+    # plt.xlim( 0, T+1)
+    # plt.ylim( -(x_0+1), +(x_0+1) )
+    # plt.title('Simulating Ornstein-Uhlenbeck Processes')
+    # l_1, = plt.plot( [], [], linewidth=1, label='path_1' )
+    # l_2, = plt.plot( [], [], linewidth=1, label='path_2' )
+    # l_3, = plt.plot( [], [], linewidth=1, label='path_3' )
+    # l_4, = plt.plot( [], [], linewidth=1, label='path_4')
+    # l_5, = plt.plot( [], [], linewidth=1, label='path_5')
+    # plt.legend()
 
-    with writer.saving(fig, 'ornstein_uhlenbeck.gif', 100):
-        for i in range(N*T+1):
-            l_1.set_data( process_1[0][0:i], process_1[1][0:i] )
-            l_2.set_data( process_2[0][0:i], process_2[1][0:i] )
-            l_3.set_data( process_3[0][0:i], process_3[1][0:i] )
-            l_4.set_data( process_4[0][0:i], process_4[1][0:i] )
-            l_5.set_data( process_5[0][0:i], process_5[1][0:i] )
-            writer.grab_frame()
+    # metadata = dict( title='ornstein_uhlenbeck', artist='me' )
+    # writer = PillowWriter(fps=(N*T+1), metadata=metadata)
+
+    # with writer.saving(fig, 'ornstein_uhlenbeck.gif', 100):
+    #     for i in range(N*T+1):
+    #         l_1.set_data( path_1[0][0:i], path_1[1][0:i] )
+    #         l_2.set_data( path_2[0][0:i], path_2[1][0:i] )
+    #         l_3.set_data( path_3[0][0:i], path_3[1][0:i] )
+    #         l_4.set_data( path_4[0][0:i], path_4[1][0:i] )
+    #         l_5.set_data( path_5[0][0:i], path_5[1][0:i] )
+    #         writer.grab_frame()
 
 if __name__ == '__main__':
     main()
