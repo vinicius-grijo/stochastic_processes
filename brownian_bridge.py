@@ -35,17 +35,20 @@ if __name__ == '__main__':
     # number of times [0,1] is divided
     N = 100
 
-    process_1 = brownian_bridge(a_1=1, b_1=-1, a_2=-1, b_2=-1, sigma_1=0.1, sigma_2=0.1, N=N, T=T)
-    process_2 = brownian_bridge(a_1=-1, b_1=-1, a_2=-1, b_2=1, sigma_1=0.1, sigma_2=0.1, N=N, T=T)
-    process_3 = brownian_bridge(a_1=-1, b_1=1, a_2=1, b_2=1, sigma_1=0.1, sigma_2=0.1, N=N, T=T)
-    process_4 = brownian_bridge(a_1=1, b_1=1, a_2=1, b_2=-1, sigma_1=0.1, sigma_2=0.1, N=N, T=T)
+    sigma_1 = 0.1
+    sigma_2 = 0.1   
+
+    path_1 = brownian_bridge(a_1=1, b_1=-1, a_2=-1, b_2=-1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
+    path_2 = brownian_bridge(a_1=-1, b_1=-1, a_2=-1, b_2=1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
+    path_3 = brownian_bridge(a_1=-1, b_1=1, a_2=1, b_2=1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
+    path_4 = brownian_bridge(a_1=1, b_1=1, a_2=1, b_2=-1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
 
     fig=plt.figure()
     plt.title('Brownian Bridges')
-    l_1, = plt.plot( [], [], label='process_1' )
-    l_2, = plt.plot( [], [], label='process_2' )
-    l_3, = plt.plot( [], [], label='process_3' )
-    l_4, = plt.plot( [], [], label='process_4' )
+    l_1, = plt.plot( [], [], label='path_1' )
+    l_2, = plt.plot( [], [], label='path_2' )
+    l_3, = plt.plot( [], [], label='path_3' )
+    l_4, = plt.plot( [], [], label='path_4' )
     plt.xlim( -1.5, 1.5 )
     plt.ylim( -1.5, 1.5 )
     plt.legend()
@@ -54,8 +57,8 @@ if __name__ == '__main__':
 
     with writer.saving(fig, 'brownian_bridge.gif', 100):
         for i in range(N*T+1):
-            l_1.set_data( process_1[0:i, 0], process_1[0:i, 1] )
-            l_2.set_data( process_2[0:i, 0], process_2[0:i, 1] )
-            l_3.set_data( process_3[0:i, 0], process_3[0:i, 1] )
-            l_4.set_data( process_4[0:i, 0], process_4[0:i, 1] )
+            l_1.set_data( path_1[0:i, 0], path_1[0:i, 1] )
+            l_2.set_data( path_2[0:i, 0], path_2[0:i, 1] )
+            l_3.set_data( path_3[0:i, 0], path_3[0:i, 1] )
+            l_4.set_data( path_4[0:i, 0], path_4[0:i, 1] )
             writer.grab_frame()
