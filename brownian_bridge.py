@@ -33,32 +33,43 @@ if __name__ == '__main__':
     # time interval
     T = 1
     # number of times [0,1] is divided
-    N = 100
+    N = 10000
 
-    sigma_1 = 0.1
-    sigma_2 = 0.1   
+    sigma_1 = 0.4
+    sigma_2 = 0.4
 
     path_1 = brownian_bridge(a_1=1, b_1=-1, a_2=-1, b_2=-1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
     path_2 = brownian_bridge(a_1=-1, b_1=-1, a_2=-1, b_2=1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
     path_3 = brownian_bridge(a_1=-1, b_1=1, a_2=1, b_2=1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
     path_4 = brownian_bridge(a_1=1, b_1=1, a_2=1, b_2=-1, sigma_1=sigma_1, sigma_2=sigma_2, N=N, T=T)
 
-    fig=plt.figure()
+    plt.xlim( -1.5, 1.5)
+    plt.ylim( -1.5, 1.5)
     plt.title('Brownian Bridges')
-    l_1, = plt.plot( [], [], label='path_1' )
-    l_2, = plt.plot( [], [], label='path_2' )
-    l_3, = plt.plot( [], [], label='path_3' )
-    l_4, = plt.plot( [], [], label='path_4' )
-    plt.xlim( -1.5, 1.5 )
-    plt.ylim( -1.5, 1.5 )
+    plt.plot(path_1[:,0], path_1[:,1], linewidth=1, label='path_1')
+    plt.plot(path_2[:,0], path_2[:,1], linewidth=1, label='path_2')
+    plt.plot(path_3[:,0], path_3[:,1], linewidth=1, label='path_3')
+    plt.plot(path_4[:,0], path_4[:,1], linewidth=1, label='path_4')
     plt.legend()
-    metadata = dict( title='brownian_bridge', artist='me' )
-    writer = PillowWriter(fps=(N*T+1)*2, metadata=metadata)
+    plt.savefig('brownian_bridge.png')
+    plt.show()
 
-    with writer.saving(fig, 'brownian_bridge.gif', 100):
-        for i in range(N*T+1):
-            l_1.set_data( path_1[0:i, 0], path_1[0:i, 1] )
-            l_2.set_data( path_2[0:i, 0], path_2[0:i, 1] )
-            l_3.set_data( path_3[0:i, 0], path_3[0:i, 1] )
-            l_4.set_data( path_4[0:i, 0], path_4[0:i, 1] )
-            writer.grab_frame()
+    # fig=plt.figure()
+    # plt.title('Brownian Bridges')
+    # l_1, = plt.plot( [], [], label='path_1' )
+    # l_2, = plt.plot( [], [], label='path_2' )
+    # l_3, = plt.plot( [], [], label='path_3' )
+    # l_4, = plt.plot( [], [], label='path_4' )
+    # plt.xlim( -1.5, 1.5 )
+    # plt.ylim( -1.5, 1.5 )
+    # plt.legend()
+    # metadata = dict( title='brownian_bridge', artist='me' )
+    # writer = PillowWriter(fps=(N*T+1)*2, metadata=metadata)
+
+    # with writer.saving(fig, 'brownian_bridge.gif', 100):
+    #     for i in range(N*T+1):
+    #         l_1.set_data( path_1[0:i, 0], path_1[0:i, 1] )
+    #         l_2.set_data( path_2[0:i, 0], path_2[0:i, 1] )
+    #         l_3.set_data( path_3[0:i, 0], path_3[0:i, 1] )
+    #         l_4.set_data( path_4[0:i, 0], path_4[0:i, 1] )
+    #         writer.grab_frame()
